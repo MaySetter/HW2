@@ -1,6 +1,6 @@
 package Race;
 
-public class Racer extends Thread{
+public class Racer implements Runnable{
 
     static private int globalId = 1;
     private final int id;

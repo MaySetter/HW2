@@ -7,7 +7,7 @@ public class Racer extends Thread{
     private int speed;
     private Track track;
 
-    public Racer(int speed, Track track) {
+    public Racer(int speed, Track track) throws Exception{
         if (speed<1 || speed >10){
             new Exception("Error: Racer's speed must be between 1-10.");
         }

@@ -1,6 +1,6 @@
 package XO;
 
-public abstract class Player extends Thread {
+public abstract class Player {
 
     protected char type;
 

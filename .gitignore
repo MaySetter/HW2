@@ -2,3 +2,12 @@
 .idea/misc.xml
 .idea/modules.xml
 *.xml
+out/production/HW2/HW2.iml
+out/production/HW2/XO/SelfGame.class
+out/production/HW2/XO/Player.class
+out/production/HW2/XO/Main.class
+out/production/HW2/XO/Game.class
+out/production/HW2/XO/Coordinates.class
+out/production/HW2/Race/Track.class
+out/production/HW2/Race/Racer.class
+out/production/HW2/Race/Main.class

@@ -2,7 +2,7 @@ package XO;
 
 import java.util.Scanner;
 
-public class SelfPlayer extends Player {
+public class SelfPlayer extends Player implements Runnable{
 
     public SelfPlayer(char type) throws Exception{
         super(type);

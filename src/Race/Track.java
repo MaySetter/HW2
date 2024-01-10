@@ -1,11 +1,9 @@
 package Race;
 
 public class Track {
-int finishedRacers;
-public Track() {
-	this.finishedRacers=0;
+    private int finishedRacers = 0;
+
+    public int getFinishedRacers(){ return finishedRacers;}
+    public void setFinishedRacers(){ finishedRacers++;}
 }
-public Track(int num) {
-	this.finishedRacers=num;
-}
-}
+

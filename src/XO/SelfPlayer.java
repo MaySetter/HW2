@@ -1,31 +1,54 @@
 package XO;
 
-import java.util.Scanner;
+import java.util.Random;
 
-public class SelfPlayer extends Player implements Runnable{
+//import java.util.Scanner;
 
-    public SelfPlayer(char type) throws Exception{
-        super(type);
+public class SelfPlayer extends Player {
+	Coordinates s=new Coordinates(0,0);
+    public SelfPlayer(char type,Game a){
+        super(type,a);
     }
-
     public void run() {
-
-        try {
-            sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        Scanner input = new Scanner(System.in);
-        System.out.println("Enter row and column for your move:");
-        int row = input.nextInt();
-        int col = input.nextInt();
-
-        while (!isFreeCell(row,col)){
-            System.out.println("Invalid move. Try again.");
-            row = input.nextInt();
-            col = input.nextInt();
-        }
-    }
-
+     	for(int i=0;i<13;i++) {
+     		if(!checkWin(a,type)&&a.getFreeCells().size()>0) {
+     			if(a.getFreeCells().size()==0) {
+     				System.out.println("Game Over , Board is full");
+     				break;
+     			}
+     			if(a.getTurn()!=type) { 
+     				try {
+     					i--;
+     					sleep(500);
+     				} catch (InterruptedException e) {
+    				e.getMessage();
+    			}
+    		}
+     			else{	
+     				if(!checkWin(a,'O')&&!checkWin(a,'X')){
+    					Random x=new Random();
+    					s=a.getFreeCells().get(x.nextInt(a.getFreeCells().size()));
+    					a.setGameBoard(s,this.getType());
+    					a.setTurn();
+    					a.printBoard();
+     					}
+				else break;
+			}
+    	}
+		else {
+			if(checkWin(a,'O')) {
+				System.out.println("Game Over .O Win.");		
+				break;		
+			}
+			else if(checkWin(a,'X')) {
+				System.out.println("Game Over .X Win.");
+				break;	
+			}
+			else {
+				System.out.println("Game Over ,Board is full ");
+				break;
+			  }	
+			}
+		}
+  	}
 }

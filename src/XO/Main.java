@@ -1,50 +1,29 @@
 package XO;
-
-import java.util.InputMismatchException;
 import java.util.Scanner;
-
 public class Main {
-
-    public static Scanner input = new Scanner(System.in);
-
-    public static void main(String[] args) throws Exception{
-
-        System.out.println("Choose Game");
-        System.out.println("1...........");
-        System.out.println("2...........");
-        System.out.println("3.Exit Game");
-
-
-        int choice;
-        do{
-            switch (choice = getChoice()) {
-                case 1 -> startUserGame();
-                case 2 -> startSelfGame();
-            }
-        } while (choice !=3); // finishes loop if user input is 5.
-        System.out.println("\nEXIT");
-    }
-
-    private static void startUserGame() {
-    }
-
-    private static void startSelfGame() {
-    }
-
-
-    public static int getChoice() throws Exception{
-        int choice;
-        try {
-            choice = input.nextInt();
-            while (choice < 1 || choice > 3) { // allows user to enter new digit if not in range.
-                System.out.print("Invalid input! Enter a number between 1 to 3: \n");
-                choice = input.nextInt(); // enter new and valid input.
-            }
-            return choice;
-        }catch (InputMismatchException e) {
-            throw new Exception("Mismatch, input is not a number.");
-        }catch (Exception e){
-            throw new Exception(e);
-        }
-    }
-}
+	public static void main(String[] args) {
+		@SuppressWarnings("resource")
+		Scanner input = new Scanner(System.in);
+		int checker=0;
+		System.out.println("Choose :");
+		System.out.println("1.Self Game.");
+		System.out.println("2.User Game.");
+		int mode=input.nextInt();
+		while (checker==0) {
+		switch(mode) {
+		case 1:
+			@SuppressWarnings("unused") SelfGame Self =new SelfGame() ;
+			checker=1;
+			break;
+		case 2:
+			@SuppressWarnings("unused") UserGame User=new UserGame();
+			checker=1;
+			break;
+		default:{
+			System.out.println("Choose 1 or 2");
+			mode=input.nextInt();
+			}
+			}
+		}
+	}		
+}	

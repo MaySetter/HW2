@@ -2,48 +2,49 @@ package XO;
 
 import java.util.Random;
 
-//import java.util.Scanner;
 
+/**
+ * This class is a thread represent self player in the game.
+ * self player play alone with random choose.
+ * @author Nir Hazan 316009489 , May Seter 312123037
+ *
+ */
 public class SelfPlayer extends Player {
 	Coordinates s=new Coordinates(0,0);
-    public SelfPlayer(char type,Game a){
-        super(type,a);
+    public SelfPlayer(char type,Game game){
+        super(type,game);
     }
     public void run() {
-     	for(int i=0;i<13;i++) {
-     		if(!checkWin(a,type)&&a.getFreeCells().size()>0) {
-     			if(a.getFreeCells().size()==0) {
+     	while(!checkWin()) {   // when some one win stop the thread.
+     		if(!checkWin()&&game.getFreeCells().size()>0) {
+     			if(game.getFreeCells().size()==0) {    //check if the board isnt full.
      				System.out.println("Game Over , Board is full");
      				break;
      			}
-     			if(a.getTurn()!=type) { 
+     			if(game.getTurn()!=type) {   // if not his turn go sleep for 500 mils
      				try {
-     					i--;
      					sleep(500);
      				} catch (InterruptedException e) {
     				e.getMessage();
     			}
     		}
      			else{	
-     				if(!checkWin(a,'O')&&!checkWin(a,'X')){
+     				synchronized(game) {  //must be synchronized because when the computer want to play must finish his turn before something can change.
+     				if(!checkWin()){
     					Random x=new Random();
-    					s=a.getFreeCells().get(x.nextInt(a.getFreeCells().size()));
-    					a.setGameBoard(s,this.getType());
-    					a.setTurn();
-    					a.printBoard();
+    					s=game.getFreeCells().get(x.nextInt(game.getFreeCells().size()));
+    					game.setGameBoard(s,this.getType());
+    					game.setTurn();
+    					game.printBoard();
+    					if(checkWin()) {
+    						System.out.println("Game Over ."+this.type+" Win.");
+    					}
      					}
 				else break;
+     				}
 			}
     	}
-		else {
-			if(checkWin(a,'O')) {
-				System.out.println("Game Over .O Win.");		
-				break;		
-			}
-			else if(checkWin(a,'X')) {
-				System.out.println("Game Over .X Win.");
-				break;	
-			}
+			
 			else {
 				System.out.println("Game Over ,Board is full ");
 				break;
@@ -51,4 +52,4 @@ public class SelfPlayer extends Player {
 			}
 		}
   	}
-}
+

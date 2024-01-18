@@ -1,27 +1,30 @@
 package XO;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
 /**
- * This class represent game board in the game.
+ * This class represents a game object.
  * @author Nir Hazan 316009489 , May Seter 312123037
- *
  */
-public abstract class Game {
-	public enum SIGNS {
-        X('X'),O('O'), NON(' ');  // Using enum to represent the signs of each player.(X OR O).
-        final char asChar;
+
+public abstract class Game { // Using enum to represent the signs of each player.(X OR O).
+	
+    public enum SIGNS { // enum of game's signs (player's X or O, as well as empty)
+        X('X'),O('O'), NON(' '); 
+        private final char asChar;
         SIGNS(char asChar) { this.asChar = asChar; }
         public char asChar(){ return asChar; }
     }
-
-    private char[][] gameBoard = new char[5][5];   // Define Variables.
+	
+    private final int COL = 5, ROW = 5;
+    private char[][] gameBoard = new char[ROW][COL];   // Define Variables.
     private char turn;
-    public Game(){
-    	for (int i = 0; i < gameBoard.length; i++) {  // Empty Constructor which build nre empty board.
-            for (int j = 0; j < gameBoard[i].length; j++) {
-                gameBoard[i][j] = ' ';                 
-            }
+	
+    public Game(){ // Empty Constructor builds an empty board and prints.
+    	for (int i = 0; i < ROW; i++) {  
+            Arrays.fill(gameBoard[i], ' ');
     	}
     	Random random=new Random();
     	int temp=random.nextInt(2);     // Using random to decide who start the game.
@@ -31,31 +34,34 @@ public abstract class Game {
     	System.out.println("First turn : "+this.turn);
     	printBoard();
     }
-    public char[][] getGameBoard() {   // get game board .
+	
+    public char[][] getGameBoard() {   // getter for game board .
 	    return this.gameBoard;
 	}
+	
     /**
      * Set the sign on the board.
-     * @param coordinate
-     * @param symbol
+     * @param coordinate cell for new mark
+     * @param symbol mark's sign (X or O)
      */ 
-    public void setGameBoard(Coordinates c,char symbol) {  //
-	    this.gameBoard[c.getRow()][c.getCol()]=symbol;
-	}
-    /**
-     * Set turn for other player.
-     */
-    public void setTurn() {
-	   if(turn==SIGNS.X.asChar)
-		   turn=SIGNS.O.asChar;
-	   else
-		   turn=SIGNS.X.asChar;
-	}
-    public char getTurn() {
-		return turn; 	
+	
+    public char[][] getGameBoard() {   // get game board .
+        return this.gameBoard;
     }
+	
+    public void setTurn() { // changes the sign for the next player's turn
+        if (turn == SIGNS.X.asChar())
+            turn = SIGNS.O.asChar();
+        else
+            turn = SIGNS.X.asChar();
+    }
+	
+    public char getTurn() { // getter
+        return turn;
+    }
+	
    /**
-    * Print the board on the screen must be synchronized because no can change the board when printing.
+    * Prints the board on the screen. Must be synchronized because board can't be changed while printing
     */
     public synchronized void printBoard(){
         System.out.println("-----------BOARD----------\n\n");
@@ -71,8 +77,9 @@ public abstract class Game {
         System.out.println("\n\n");
 
     }
+	
     /**
-     * 
+     * Method creates an ArrayList of all the empty cells in board.
      * @return List of coordinates of free cells.
      */
     public List<Coordinates> getFreeCells(){

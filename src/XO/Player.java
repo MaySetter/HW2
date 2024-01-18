@@ -1,24 +1,30 @@
 package XO;
 import java.util.List;
+import XO.Game.SIGNS;
+/**
+ * This class represent player in the game.
+ *there are two kind of players this is the father of them.
+ * @author Nir Hazan 316009489 , May Seter 312123037
+ *
+ */
 public abstract class Player extends Thread {
     protected char type;
-    protected Game a;
-    public Player(char type,Game a) {
+    protected Game game;
+    public Player(char type,Game game) {
         this.type = type;
-        this.a=a;
+		this.game=game;
     }
-    public abstract void run();
+    public abstract void run(); // implements in players class
     public char getType() {
         return type;
     }
-    protected boolean isFreeCell(Game a) {     
-        if( a.getFreeCells().size()==0)
-        	return false;
-        else return true;
-    }
-    protected boolean isFreeCell(int row, int col) {
+    /**
+     * //check if specific cell if free.
+     * 
+     */
+    protected boolean isFreeCell(int row, int col) { 
     	 Coordinates temp = new Coordinates(row,col);
-    	  List<Coordinates> freeCells = a.getFreeCells();
+    	  List<Coordinates> freeCells = game.getFreeCells();
 		for(int i=0;i<freeCells.size();i++) {
 			Coordinates run=freeCells.get(i);
 			if(temp.getRow()==run.getRow()&&temp.getCol()==run.getCol()){
@@ -27,62 +33,35 @@ public abstract class Player extends Thread {
 		}
 		return false;
 	}
-public synchronized boolean checkWin(Game a, char symbol) {
-	char[][] gameBoard = a.getGameBoard();
-    int size = gameBoard.length;
-//check diagonals in board.
-if (a.getGameBoard()[0][1] == symbol && a.getGameBoard()[1][2] == symbol &&a.getGameBoard()[2][3] == symbol && a.getGameBoard()[3][4] == symbol)
-        return true;
-if (a.getGameBoard()[1][0] == symbol && a.getGameBoard()[2][1] == symbol &&a.getGameBoard()[3][2] == symbol && a.getGameBoard()[4][3] == symbol) 
-        return true;
-if (a.getGameBoard()[0][3] == symbol && a.getGameBoard()[1][2] == symbol && a.getGameBoard()[2][1] == symbol && a.getGameBoard()[3][0] == symbol) 
-       return true;
-if (a.getGameBoard()[1][4] == symbol && a.getGameBoard()[2][3] == symbol &&a.getGameBoard()[3][2] == symbol && a.getGameBoard()[4][1] == symbol) 
-        return true;
-if (a.getGameBoard()[0][0] == symbol && a.getGameBoard()[1][1] == symbol &&a.getGameBoard()[2][2] == symbol && a.getGameBoard()[3][3] == symbol) 
-return true;
-if (a.getGameBoard()[4][4] == symbol && a.getGameBoard()[1][1] == symbol &&a.getGameBoard()[2][2] == symbol && a.getGameBoard()[3][3] == symbol) 
-return true;
-if (a.getGameBoard()[4][0] == symbol && a.getGameBoard()[3][1] == symbol &&a.getGameBoard()[2][2] == symbol && a.getGameBoard()[1][3] == symbol) 
-return true;
-if (a.getGameBoard()[0][4] == symbol && a.getGameBoard()[3][1] == symbol &&a.getGameBoard()[2][2] == symbol && a.getGameBoard()[1][3] == symbol) 
-return true;
-// Check for winning sequences in rows and columns
-for (int i = 0; i < size; i++) {
-    if (checkSequence(gameBoard[i], symbol) || checkSequence(getColumn(gameBoard, i), symbol)) {
-        return true;
-    }
-}
-
-
-
-
-
-return false;
-   
-}
-private static char[] getColumn(char[][] matrix, int columnIndex) {
-    int size = matrix.length;
-    char[] column = new char[size];
-    for (int i = 0; i < size; i++) {
-        column[i] = matrix[i][columnIndex];
-    }
-    return column;
-}
-private static boolean checkSequence(char[] sequence, char symbol) {
-    int count = 0;
-    for (char cell : sequence) {
-        if (cell == symbol) {
-            count++;
-            if (count == 4) {
-                return true;
+    /**
+     * // function that check if someone win
+     * 
+     */
+    public synchronized boolean checkWin() {  
+        for (int x = 0; x < game.getGameBoard().length; x++) { // row
+            for (int y = 0; y < game.getGameBoard()[x].length; y++) { // col
+                char symbol = game.getGameBoard()[y][x];
+                if(symbol !=SIGNS.NON.asChar)
+                if ( checkSeq(y, x, symbol, game.getGameBoard()) ) {
+                    return true;
+                }
             }
-        } else {
-            count = 0;
         }
+        return false;
     }
-    return false;
-} 
-
-    
+    /**
+     * // function that check if there is 4 sign in row column or diagonal on the board.
+     * 
+     */
+    private boolean checkSeq(int y, int x, char symbol, char[][] board) { // function that
+        int col = 0, row = 0, diag1 = 0, diag2 = 0;
+        for (int i = 1; i < 4; i++) {
+            if (x < 2 && board[y][x + i] == symbol) row++;
+            if (y < 2 && board[y + i][x] == symbol) col++;
+            if ((x < 2 && y < 2) && board[y + i][x + i] == symbol) diag1++;
+            if ((x > 2 && y < 2) && board[y + i][x - i] == symbol) diag2++;
+            if (col == 3 || row == 3 || diag1 == 3 || diag2 == 3) return true;
+        }
+        return false;
+    }
 }

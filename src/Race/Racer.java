@@ -1,50 +1,50 @@
 package Race;
-/**
- * Class that represent racer in the race.
- * has speed,id,and global id.
- * @author Nir Hazan 316009489 , May Seter 312123037
- *
- */
-public class Racer implements Runnable{
+
+import java.util.Scanner;
+
+public class Racer extends Thread{
 
     static private int globalId = 1;
-    private final int id;              // Define Variables
+    private final int id;
     private int speed;
-    private Track track;
-/**
- * 
- * @param speed of racer
- * @param track which track.
- * @throws Exception if speed not between 1-10.
- */
-    public Racer(int speed, Track track) throws Exception{
-        if (speed<1 || speed >10){
-            new Exception("Error: Racer's speed must be between 1-10.");
-        }
+    private final Track track;
+    private final Scanner input = new Scanner(System.in);
+
+    public Racer(int speed, Track track) {
+        do{
+            try {
+                this.speed = setSpeed(speed);
+            }catch (Exception e){
+                System.out.println(e.getMessage()+"\nEnter valid speed: ");
+                speed = input.nextInt();
+            }
+        }while (this.speed == 0);
+
         this.speed = speed;
         this.track = track;
         id = globalId;
         globalId++;
     }
-/**
- * function that make the racer start running 100m according to speed (priority).
- */
+
+    private int setSpeed(int speed) throws Exception{
+        if (speed<1 || speed>10)
+            throw new Exception("Error: speed must be between 1-10.");
+        else return speed;
+    }
+
     public void go(){
-    	Thread.currentThread().setPriority(speed);
+        setPriority(speed);
         for (int i=1; i<=100; i++)
             System.out.println("Runner " + id + " ran " + i + " meters");
         track.setFinishedRacers();
         System.out.println("Runner " + id + " finished " + track.getFinishedRacers() + suffix());
     }
-/**
- * racer is thread runing go function when start (run).
- */
 
     public void run(){
         go();
     }
 
-    private String suffix(){  // using string to print suffix of racers.
+    private String suffix(){
         return switch (track.getFinishedRacers()) {
             case (1) -> "st";
             case (2) -> "nd";

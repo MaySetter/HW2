@@ -6,6 +6,7 @@ import java.util.Random;
 /**
  * This class represents a game board in the XO game.
  * @author Nir Hazan 316009489 , May Seter 312123037
+ *
  */
 public abstract class Game {
     public enum SIGNS { // Using enum to represent the signs of each player.(X OR O).
@@ -22,6 +23,7 @@ public abstract class Game {
     private final int COL=5, ROW=5; // Numbers of rows and columns in game.
     private final char[][] gameBoard = new char[ROW][COL];   // Define matrix for game board.
     private char turn;
+    private char winner = SIGNS.NON.asChar();
 
 
     /**
@@ -41,7 +43,7 @@ public abstract class Game {
         printBoard();
     }
 
-    public abstract void startGame(); // abstract
+    public abstract void startGame() throws InterruptedException; // abstract
 
     public char[][] getGameBoard() {   // getter for game board.
         return this.gameBoard;
@@ -70,6 +72,9 @@ public abstract class Game {
     public char getTurn() {
         return turn;
     }
+
+    public void setWinner(char winner){ this.winner = winner; }
+    public char getWinner() {return winner;}
 
 
     /**

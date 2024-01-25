@@ -1,55 +1,49 @@
 package XO;
-
 import java.util.Random;
 
-
 /**
- * This class is a thread represent self player in the game.
- * self player play alone with random choose.
+ * This class is a thread representing a SelfPlayer (independent player) in the game.
+ * self player play alone with random choices.
  * @author Nir Hazan 316009489 , May Seter 312123037
- *
  */
 public class SelfPlayer extends Player {
-	Coordinates s=new Coordinates(0,0);
-    public SelfPlayer(char type,Game game){
-        super(type,game);
-    }
-    public void run() {
-     	while(!checkWin()) {   // when some one win stop the thread.
-     		if(!checkWin()&&game.getFreeCells().size()>0) {
-     			if(game.getFreeCells().size()==0) {    //check if the board isnt full.
-     				System.out.println("Game Over , Board is full");
-     				break;
-     			}
-     			if(game.getTurn()!=type) {   // if not his turn go sleep for 500 mils
-     				try {
-     					sleep(500);
-     				} catch (InterruptedException e) {
-    				e.getMessage();
-    			}
-    		}
-     			else{	
-     				synchronized(game) {  //must be synchronized because when the computer want to play must finish his turn before something can change.
-     				if(!checkWin()){
-    					Random x=new Random();
-    					s=game.getFreeCells().get(x.nextInt(game.getFreeCells().size()));
-    					game.setGameBoard(s,this.getType());
-    					game.setTurn();
-    					game.printBoard();
-    					if(checkWin()) {
-    						System.out.println("Game Over ."+this.type+" Win.");
-    					}
-     					}
-				else break;
-     				}
+	Coordinates s;
+
+	public SelfPlayer(char type){ 	// constructor
+		super(type);
+	}
+
+	public void run() {
+		while(!win) {   // when someone win loop stops.
+
+			if(game.getTurn()!=type) {   // if not thread's turn, go to sleep for 500 mils
+				try {
+					sleep(500);
+				} catch (InterruptedException e) {
+					System.out.println(e.getMessage());
+				}
 			}
-    	}
-			
 			else {
-				System.out.println("Game Over ,Board is full ");
-				break;
-			  }	
+				//must be synchronized. When thread wants to "play", it must finish its turn before changes can be made to game.
+				synchronized(game) {
+
+					if(!win && game.getFreeCells().size()==0) { // no one won but no free cells are left
+						System.out.println("Game Over, Board is full");
+						win = true; // changes loop's condition.
+						break;
+					}
+
+					else{ 	// no one won and there are free cells
+						Random x = new Random();
+						s = game.getFreeCells().get(x.nextInt(game.getFreeCells().size())); // generates a random cell from the freeCells list.
+						game.setGameBoard(s,this.getType()); // set sign on board
+						game.setTurn(); // changed turn
+						game.printBoard();
+						checkWin();
+						if(win) game.setWinner(this.type);
+					}
+				}
 			}
 		}
-  	}
-
+	}
+}

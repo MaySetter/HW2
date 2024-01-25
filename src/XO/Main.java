@@ -10,19 +10,19 @@ public class Main {
 		Scanner input = new Scanner(System.in);
 
 		System.out.println("Choose Game Mode: ");
-		System.out.println("1.Self Game.");      //Using input from user to decide which game mode should run.
+		System.out.println("1.Self Game.");      //Using input from user to decide which game mode should be run.
 		System.out.println("2.User Game.");
 
 		Game game = null;
 		boolean checker = true; // will check if user input (game mode) is valid
 		int mode = input.nextInt(); // game mode
 		do switch (mode) {
-			case 1 -> {
+			case 1 -> { 	// SelfGame
 				SelfPlayer player1 = new SelfPlayer(Game.SIGNS.X.asChar());
 				SelfPlayer player2 = new SelfPlayer(Game.SIGNS.O.asChar());
 				game = new SelfGame(player1,player2);
 			}
-			case 2 -> {
+			case 2 -> { 	// UserGame
 				SelfPlayer player1 = new SelfPlayer(Game.SIGNS.X.asChar());
 				UserPlayer player2 = new UserPlayer(Game.SIGNS.O.asChar());
 				game = new UserGame(player1,player2);
@@ -39,5 +39,9 @@ public class Main {
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+
+		char winner = game.getWinner();
+		if (winner!= Game.SIGNS.NON.asChar())
+			System.out.println("Game Over. " + winner + " Wins.");
 	}
 }

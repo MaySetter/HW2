@@ -1,9 +1,7 @@
 package Race;
 /**
- * Class that represent track in the race.
- * has how much racers finished.
+ * Class that represent track in the race, and how many racers has finished.
  * @author Nir Hazan 316009489 , May Seter 312123037
- *
  */
 public class Track {
     private int finishedRacers; // Define Variables

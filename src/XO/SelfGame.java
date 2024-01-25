@@ -11,11 +11,12 @@ public class SelfGame extends Game{
 		this.player1 = player1;
 		this.player2 = player2;
 	}
-	
-	public void startGame(){ 	// method sets the game for the players and starts their threads
+	public void startGame() throws InterruptedException { 	// method sets the game for the players and starts their threads
 		player1.setGameForPlayer(this);
 		player2.setGameForPlayer(this);
 		player1.start();
 		player2.start();
+		player1.join();
+		player2.join();
 	}
 }

@@ -1,6 +1,6 @@
 package Race;
 /**
- * Class that represent track in the race, and how many racers has finished.
+ * Class that represents track in the race, and how many racers has finished.
  * @author Nir Hazan 316009489 , May Seter 312123037
  */
 public class Track {
@@ -11,6 +11,7 @@ public class Track {
     Track(){
       this.finishedRacers=0;
     }
-    public int getFinishedRacers(){ return finishedRacers;}  // get and set for finishedRacers variable.
+    // getter and setter for finishedRacers variable.
+    public int getFinishedRacers(){ return finishedRacers;}  
     public void setFinishedRacers(){ finishedRacers++;}
 }

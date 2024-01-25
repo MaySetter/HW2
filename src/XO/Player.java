@@ -44,7 +44,7 @@ public abstract class Player extends Thread {
 	}
 
     /**
-     * Method checks if there's a win. 
+     * Method checks if there's a win.
      * If cell is not empty, will use checkSeq method to check if cell creates a sequence of 4
      * or more equal signs.
      * if so, changes static variable 'win' to true.
@@ -68,9 +68,9 @@ public abstract class Player extends Thread {
      * @param x cell's column number
      * @param symbol cell's sign
      * @param board game board
-     * @return true if one of the count variables reached 4 (no need to count if sequence is longer). 
+     * @return true if one of the count variables reached 4 (no need to count if sequence is longer).
      */
-    private boolean checkSeq(int y, int x, char symbol, char[][] board) { 
+    private boolean checkSeq(int y, int x, char symbol, char[][] board) {
         int col = 1, row = 1, diagonal1 = 1, diagonal2 = 1; // counter variables.
         for (int i = 1; i < game.getGameBoard().length-1; i++) {
             if (x < 2 && board[y][x + i] == symbol) row++; // row sequence

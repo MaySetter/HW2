@@ -7,42 +7,42 @@ import java.util.Scanner;
  *
  */
 public class UserPlayer extends Player{
-	Coordinates s =new Coordinates(0,0);
-	Scanner input = new Scanner(System.in);	
-    public UserPlayer(char type,Game game){
-        super(type,game);
-    }
-    public void  run() {
-    	
-        	while(!checkWin()) {
-        		
-        		if(game.getTurn()!=type) {   // Make sleep if its not his turn.
-        			try {
-						sleep(500);
-					} catch (InterruptedException e) {
-						e.getMessage();
+	Coordinates s;
+	Scanner input = new Scanner(System.in);
+	public UserPlayer(char type){
+		super(type);
+	}
+
+	public void  run() {
+
+		while(!win) {
+
+			synchronized(game) { // when his turn ask the user where to put the sign.
+
+				if(game.getFreeCells().size()==0) {
+					System.out.println("Game Over, Board is full");
+					win = true;
+					break;
+				}
+
+				if(game.getTurn()==type&&game.getFreeCells().size()>0 && !win) {
+					System.out.println("Enter row for your move:");
+					int row = input.nextInt()-1;
+					System.out.println("Enter  column for your move:");
+					int col = input.nextInt()-1;                            // must be synchronized because when player need to play we wait until the end of his turn.
+					while (!isFreeCell(row,col)){                              //
+						System.out.println("Invalid move. Try again.");
+						row = input.nextInt()-1;
+						col = input.nextInt()-1;
 					}
-        		}
-        		synchronized(game) { // when his turn ask the user where to put the sign.
-        		if(game.getTurn()==type&&game.getFreeCells().size()>0&&!checkWin()) {
-        			System.out.println("Enter row for your move:");
-        			int row = input.nextInt();
-        			System.out.println("Enter  column for your move:");
-        			int col = input.nextInt();                            // must be synchronized because when player need to play we wait until the end of his turn.
-        			while (!isFreeCell(row,col)){                              // 
-        				System.out.println("Invalid move. Try again.");
-        				row = input.nextInt();
-        				col = input.nextInt();
-        			}
-        			s = new Coordinates(row,col);
-        			game.setGameBoard(s,this.type);
-        			game.setTurn();
-        			game.printBoard();       // after put sign if win print the winner and the game will stopped.
-        			if(checkWin()) {
-        				System.out.println("Game Over ."+this.type+" Win.");
-        			}
-        		}
-        		}
-        	}		 	
-       }
+					s = new Coordinates(row,col);
+					game.setGameBoard(s,this.type);
+					game.setTurn();
+					game.printBoard();       // after put sign if win print the winner and the game will stopped.
+					checkWin();
+					if(win) game.setWinner(this.type);
+				}
+			}
+		}
+	}
 }

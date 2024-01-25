@@ -7,28 +7,37 @@ import java.util.Scanner;
  */
 public class Main {
 	public static void main(String[] args) {
-		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
-		int checker=0;
-		System.out.println("Choose :");
-		System.out.println("1.Self Game.");          //Using input from user to decide which game mode should be run.
+
+		System.out.println("Choose Game Mode: ");
+		System.out.println("1.Self Game.");      //Using input from user to decide which game mode should be run.
 		System.out.println("2.User Game.");
-		int mode=input.nextInt();
-		while (checker==0) {
-		switch(mode) {
-		case 1:
-			@SuppressWarnings("unused") SelfGame Self =new SelfGame() ;
-			checker=1;
-			break;
-		case 2:
-			@SuppressWarnings("unused") UserGame User=new UserGame();
-			checker=1;
-			break;
-		default:{
-			System.out.println("Choose 1 or 2");
-			mode=input.nextInt();
+
+		Game game = null;
+		boolean checker = true; // will check if user input (game mode) is valid
+		int mode = input.nextInt(); // game mode
+		do switch (mode) {
+			case 1 -> {
+				SelfPlayer player1 = new SelfPlayer(Game.SIGNS.X.asChar());
+				SelfPlayer player2 = new SelfPlayer(Game.SIGNS.O.asChar());
+				game = new SelfGame(player1,player2);
 			}
+			case 2 -> {
+				SelfPlayer player1 = new SelfPlayer(Game.SIGNS.X.asChar());
+				UserPlayer player2 = new UserPlayer(Game.SIGNS.O.asChar());
+				game = new UserGame(player1,player2);
 			}
+			default -> {   // if user input is not valid
+				checker = false;
+				System.out.println("Choose 1 or 2.");
+				mode = input.nextInt();
+			}
+		} while(!checker);
+
+		try{
+			game.startGame();
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
-	}		
-}	
+	}
+}

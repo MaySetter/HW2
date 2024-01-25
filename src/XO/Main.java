@@ -10,7 +10,7 @@ public class Main {
 		Scanner input = new Scanner(System.in);
 
 		System.out.println("Choose Game Mode: ");
-		System.out.println("1.Self Game.");      //Using input from user to decide which game mode should be run.
+		System.out.println("1.Self Game.");      //Using input from user to decide which game mode should run.
 		System.out.println("2.User Game.");
 
 		Game game = null;

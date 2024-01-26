@@ -53,8 +53,10 @@ public class Racer extends Thread{
         setPriority(speed);
         for (int i=1; i<=100; i++)
             System.out.println("Runner " + id + " ran " + i + " meters");
-        track.setFinishedRacers();
-        int finishNum = track.getFinishedRacers();
+        synchronized (track) {
+            track.setFinishedRacers();
+            finishNum = track.getFinishedRacers();
+        }
         System.out.println("Runner " + id + " finished " + finishNum + suffix(finishNum));
     }
 
